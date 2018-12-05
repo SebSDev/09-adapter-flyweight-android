@@ -88,6 +88,6 @@ public class FighterRecyclerViewAdapter extends RecyclerView.Adapter<FighterRecy
             return fighters.size();
         }
 
-        return 0; // TODO: change this to 0
+        return 0;
     }
 }
