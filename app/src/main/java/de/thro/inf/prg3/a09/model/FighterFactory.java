@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.thro.inf.prg3.a09.R;
@@ -19,20 +21,25 @@ import de.thro.inf.prg3.a09.model.rebellion.YWing;
  * @author Peter Kurfer
  */
 
-public class FighterFactory {
-
+public class FighterFactory
+{
     private final Random random;
     private final Context context;
     private final NameGenerator nameGenerator;
 
-    public FighterFactory(Context context) {
+    private Map<Integer, Drawable> flyweights = new HashMap<>();
+
+    public FighterFactory(Context context)
+    {
         this.context = context;
         nameGenerator = new NameGenerator(context);
         random = new Random();
     }
 
-    public Fighter createFighter() {
-        switch (random.nextInt(6)) {
+    public Fighter createFighter()
+    {
+        switch (random.nextInt(6))
+        {
             case 0:
                 return new AWing(nameGenerator.generateName(), loadImage(R.drawable.awing));
             case 1:
@@ -48,7 +55,18 @@ public class FighterFactory {
         }
     }
 
-    private Drawable loadImage(int imageId) {
-        return new BitmapDrawable(context.getResources(), BitmapFactory.decodeResource(context.getResources(), imageId));
+    private Drawable loadImage(int imageId)
+    {
+        if (flyweights.containsKey(imageId))
+        {
+            return flyweights.get(imageId);
+        }
+
+        Drawable dr = new BitmapDrawable(context.getResources(), BitmapFactory.decodeResource(context
+                .getResources(), imageId));
+
+        flyweights.put(imageId, dr);
+
+        return dr;
     }
 }
